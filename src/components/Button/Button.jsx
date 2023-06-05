@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import styles from "./Button.module.css";
+import { Link } from "react-router-dom";
 
 export const Button = ({
   children,
@@ -8,17 +9,18 @@ export const Button = ({
   disabled,
   onClick,
   className,
+  href,
 }) => {
-  return (
-    <button
-      className={classNames(styles.button, className, {
-        [styles.disabled]: disabled,
-      })}
-      onClick={onClick}
-      type={type}
-      disabled={disabled}
-    >
-      {children}
-    </button>
-  );
+  const tag = href ? Link : "button";
+  const linkProps = href ? { to: href } : {};
+  return React.createElement(tag, {
+    ...linkProps,
+    className: classNames(styles.button, className, {
+      [styles.disabled]: disabled,
+    }),
+    onClick,
+    type,
+    disabled,
+    children,
+  });
 };

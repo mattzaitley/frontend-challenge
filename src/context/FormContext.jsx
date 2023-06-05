@@ -5,9 +5,9 @@ const formContext = createContext();
 const initialState = {
   email: { value: "", error: false, isPristine: true },
   password: { value: "", error: false, isPristine: true },
-  firstName: { value: "", error: false, isPristine: true },
-  favoriteColor: { value: null, error: false, isPristine: true },
-  agreeToTerms: { value: false, error: false, isPristine: true },
+  name: { value: "", error: false, isPristine: true },
+  color: { value: null, error: false, isPristine: true },
+  terms: { value: false, error: false, isPristine: true },
 };
 
 const formReducer = (state, action) => {
@@ -23,8 +23,8 @@ const formReducer = (state, action) => {
       };
     case "SET_ERRORS":
       const newState = { ...state };
-      action.payload.errors.forEach((error) => {
-        newState[error].error = true;
+      Object.entries(action.payload.errors).forEach(([key, error]) => {
+        newState[key].error = error;
       });
       return {
         ...newState,
@@ -52,31 +52,25 @@ const validateEmail = (email) => {
 };
 
 const validatePassword = (password) => {
-  return password.length > 8;
+  return password.length >= 8;
 };
 
 export const FormProvider = ({ children }) => {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
   const validate = (
-    fields = ["email", "password", "firstName", "favoriteColor", "agreeToTerms"]
+    fields = ["email", "password", "name", "color", "terms"]
   ) => {
-    const { email, password, firstName, favoriteColor, agreeToTerms } = state;
+    const { email, password, name, color, terms } = state;
     const emailValid = fields.includes("email")
       ? validateEmail(email.value)
       : true;
     const passwordValid = fields.includes("password")
       ? validatePassword(password.value)
       : true;
-    const firstNameValid = fields.includes("firstName")
-      ? firstName.value.length > 0
-      : true;
-    const favoriteColorValid = fields.includes("favoriteColor")
-      ? favoriteColor.value !== null
-      : true;
-    const agreeToTermsValid = fields.includes("agreeToTerms")
-      ? agreeToTerms.value
-      : true;
+    const nameValid = fields.includes("name") ? name.value.length > 0 : true;
+    const colorValid = fields.includes("color") ? color.value !== null : true;
+    const termsValid = fields.includes("terms") ? terms.value : true;
 
     dispatch(
       setErrorsAction({
@@ -84,26 +78,17 @@ export const FormProvider = ({ children }) => {
         password: !passwordValid
           ? "Password must be at least 8 characters"
           : false,
-        firstName: !firstNameValid ? "Please enter a first name" : false,
-        favoriteColor: !favoriteColorValid
-          ? "Please select a favorite color"
-          : false,
-        agreeToTerms: !agreeToTermsValid ? "Please agree to the terms" : false,
+        name: !nameValid ? "Please enter a first name" : false,
+        color: !colorValid ? "Please select a favorite color" : false,
+        terms: !termsValid ? "Please agree to the terms" : false,
       })
     );
 
-    return (
-      emailValid &&
-      passwordValid &&
-      firstNameValid &&
-      favoriteColorValid &&
-      agreeToTerms.value
-    );
+    return emailValid && passwordValid && nameValid && colorValid && termsValid;
   };
 
   const updateField = (key, value) => dispatch(updateFieldAction(key, value));
 
-  console.log("what");
   return (
     <formContext.Provider value={{ state, updateField, validate }}>
       {children}
@@ -115,6 +100,7 @@ export const useFormContext = () => {
   const { state, updateField, validate } = useContext(formContext);
   const errors = Object.keys(state).reduce((acc, key) => {
     if (state[key].error) {
+      console.log(state[key].error);
       acc[key] = state[key].error;
     }
     return acc;

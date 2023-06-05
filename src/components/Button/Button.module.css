@@ -4,4 +4,7 @@
   justify-content: center;
   background: dodgerblue;
   color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 2px;
 }

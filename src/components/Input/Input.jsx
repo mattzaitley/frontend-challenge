@@ -13,7 +13,11 @@ export const Input = ({
   children,
 }) => {
   return (
-    <div className={classNames(styles.inputWrapper, className)}>
+    <div
+      className={classNames(styles.inputWrapper, className, {
+        [styles.error]: error,
+      })}
+    >
       <input
         className={classNames(styles.input, {
           [styles.error]: error,
@@ -25,7 +29,7 @@ export const Input = ({
         placeholder={placeholder}
       />
       {children}
-      {error ? <p className={styles.errorLabel}>{error}</p> : null}
+      {error ? <p className={styles.errorMessage}>{error}</p> : null}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Form.module.css";
 
 export const Form = ({ children, onSubmit }) => {
-  const handleSubmit = (event) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit();
   };
