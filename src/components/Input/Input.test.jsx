@@ -1,19 +1,19 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import { userEvent } from "@testing-library/user-event";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { Input } from "./Input";
 
 describe("Input", () => {
   it("renders correctly", () => {
     render(<Input placeholder="test placeholder" />);
-    expect(screen.getByPlaceholderText("test placeholder")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("test placeholder")).not.toBeNull();
   });
 
   it("calls onChange callback on change event", () => {
-    const user = userEvent.setup();
     const onChange = jest.fn();
     render(<Input placeholder="test placeholder" onChange={onChange} />);
-    user.keyboard(screen.getByPlaceholderText("test placeholder"), "23");
+    fireEvent.change(screen.getByPlaceholderText("test placeholder"), {
+      target: { value: "23" },
+    });
     expect(onChange).toHaveBeenCalledWith("23");
   });
 });
