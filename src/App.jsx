@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "normalize.css";
 import "./App.css";
 import { FormProvider } from "./context/FormContext";

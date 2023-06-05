@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router";
-import { Button, Form, ButtonGroup } from "../../components";
+import { Button, Form, ButtonGroup, Spinner } from "../../components";
 import { useFormContext } from "../../context/FormContext";
+import { useState } from "react";
 
 export const ConfirmationPage = () => {
+  const [isFetching, setIsFetching] = useState(false);
   const { values, validate } = useFormContext();
   const navigate = useNavigate();
 
   const handleSubmit = () => {
+    setIsFetching(true);
     if (!validate()) navigate("/error");
     fetch("http://localhost:3001/api/submit", {
       method: "POST",
@@ -39,7 +42,7 @@ export const ConfirmationPage = () => {
       </ul>
       <ButtonGroup>
         <Button href="/more-info">Back</Button>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{isFetching ? <Spinner /> : "Submit"}</Button>
       </ButtonGroup>
     </Form>
   );

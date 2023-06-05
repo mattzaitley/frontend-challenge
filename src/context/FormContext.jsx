@@ -61,6 +61,7 @@ export const FormProvider = ({ children }) => {
   const validate = (
     fields = ["email", "password", "name", "color", "terms"]
   ) => {
+    console.trace("validate");
     const { email, password, name, color, terms } = state;
     const emailValid = fields.includes("email")
       ? validateEmail(email.value)
@@ -89,18 +90,19 @@ export const FormProvider = ({ children }) => {
 
   const updateField = (key, value) => dispatch(updateFieldAction(key, value));
 
+  const resetForm = () => dispatch({ type: "RESET_FORM" });
+
   return (
-    <formContext.Provider value={{ state, updateField, validate }}>
+    <formContext.Provider value={{ state, updateField, validate, resetForm }}>
       {children}
     </formContext.Provider>
   );
 };
 
 export const useFormContext = () => {
-  const { state, updateField, validate } = useContext(formContext);
+  const { state, updateField, validate, resetForm } = useContext(formContext);
   const errors = Object.keys(state).reduce((acc, key) => {
     if (state[key].error) {
-      console.log(state[key].error);
       acc[key] = state[key].error;
     }
     return acc;
@@ -111,5 +113,5 @@ export const useFormContext = () => {
     return acc;
   }, {});
 
-  return { errors, values, updateField, validate };
+  return { errors, values, updateField, validate, resetForm };
 };

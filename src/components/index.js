@@ -4,3 +4,4 @@ export { Form } from "./Form";
 export { PasswordInput } from "./PasswordInput";
 export { ButtonGroup } from "./ButtonGroup";
 export { Checkbox } from "./Checkbox";
+export { Spinner } from "./Spinner";

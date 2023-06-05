@@ -35,7 +35,10 @@ export const MoreInfoPage = () => {
         cacheOptions
         defaultOptions
         onChange={(option) => updateField("color", option.value)}
-        styles={{ control: (base) => ({ ...base, ...dropdownStyleOverrides }) }}
+        styles={{
+          control: (base) => ({ ...base, ...dropdownStyleOverrides }),
+          container: (base) => ({ ...base, width: 400 }),
+        }}
       />
       {errors.color && <p>{errors.color}</p>}
       <Checkbox
