@@ -5,12 +5,11 @@ import styles from "./PasswordInput.module.css";
 export const PasswordInput = ({ ...rest }) => {
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
   return (
-    <div className={styles.wrapper}>
-      <Input
-        className={styles.input}
-        {...rest}
-        type={isPasswordVisible ? "text" : "password"}
-      />
+    <Input
+      className={styles.input}
+      {...rest}
+      type={isPasswordVisible ? "text" : "password"}
+    >
       <button
         type="button"
         className={styles.showButton}
@@ -18,6 +17,6 @@ export const PasswordInput = ({ ...rest }) => {
       >
         {isPasswordVisible ? "Hide" : "View"}
       </button>
-    </div>
+    </Input>
   );
 };

@@ -10,9 +10,10 @@ export const Input = ({
   placeholder,
   className,
   error,
+  children,
 }) => {
   return (
-    <div style={classNames(styles.inputWrapper, className)}>
+    <div className={classNames(styles.inputWrapper, className)}>
       <input
         className={classNames(styles.input, {
           [styles.error]: error,
@@ -23,6 +24,7 @@ export const Input = ({
         name={name}
         placeholder={placeholder}
       />
+      {children}
       {error ? <p className={styles.errorLabel}>{error}</p> : null}
     </div>
   );
